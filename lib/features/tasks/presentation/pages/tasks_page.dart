@@ -4,12 +4,12 @@ import 'package:taks_app/core/presentation/design/atoms/custom_card.dart';
 import 'package:taks_app/core/presentation/design/atoms/custom_text.dart';
 import 'package:taks_app/core/presentation/design/tokens/colors.dart';
 import 'package:taks_app/core/presentation/utils/custom_dialogs.dart';
-import 'package:taks_app/core/presentation/utils/extension/dimens_extension.dart';
 import 'package:taks_app/core/presentation/utils/global/global_data.dart';
+import 'package:taks_app/features/tasks/domain/entities/task.dart';
 import 'package:taks_app/features/tasks/presentation/blocs/task_bloc.dart';
-import 'package:taks_app/features/tasks/presentation/blocs/task_event.dart';
 import 'package:taks_app/features/tasks/presentation/blocs/task_state.dart';
 import 'package:taks_app/features/tasks/presentation/widgets/add_task_form.dart';
+import 'package:taks_app/features/tasks/presentation/widgets/list_task.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({super.key});
@@ -19,6 +19,10 @@ class TasksPage extends StatefulWidget {
 }
 
 class _TasksPageState extends State<TasksPage> {
+  List<Task> allTasks = [];
+  List<Task> completedTasks = [];
+  List<Task> noCompletedTasks = [];
+  int idFilter = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +31,11 @@ class _TasksPageState extends State<TasksPage> {
           if (state is TaskLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is TaskLoaded) {
+            allTasks = state.tasks;
+            completedTasks =
+                allTasks.where((task) => task.isCompleted).toList();
+            noCompletedTasks =
+                allTasks.where((task) => !task.isCompleted).toList();
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -47,61 +56,29 @@ class _TasksPageState extends State<TasksPage> {
                     height: 35,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => CustomCard(
-                        color: colors.primaryColor,
-                        width: context.width(.32),
-                        child: CustomText(
-                          globalData.itemsFilter[index]['label'],
-                          textAlign: TextAlign.center,
-                          textColor: Colors.white,
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            idFilter = index;
+                          });
+                        },
+                        child: CustomCard(
+                          color: colors.primaryColor,
+                          child: CustomText(
+                            "${globalData.itemsFilter[index]['label']} (${getListLength(index)})",
+                            textAlign: TextAlign.center,
+                            textColor: Colors.white,
+                          ),
                         ),
                       ),
-                      separatorBuilder: (context, index) => const SizedBox(
-                        width: 10,
-                      ),
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: 10),
                       itemCount: globalData.itemsFilter.length,
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: state.tasks.length,
-                      itemBuilder: (context, index) {
-                        final task = state.tasks[index];
-                        return ListTile(
-                          contentPadding: const EdgeInsets.only(left: 10),
-                          tileColor: index % 2 == 0
-                              ? Colors.grey[200]
-                              : Colors.white, // Alterna colores
-                          selectedTileColor: Colors
-                              .blue[100], // Color cuando está seleccionado
-                          selected:
-                              false, // Cambia esto según tu lógica de selección
-                          title: CustomText(task.title),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  Icons.check_circle_outlined,
-                                  color: task.isCompleted ? Colors.green : null,
-                                ),
-                                onPressed: () {
-                                  BlocProvider.of<TaskBloc>(context)
-                                      .add(CompleteTaskEvent(taskId: task.id));
-                                },
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () =>
-                                    BlocProvider.of<TaskBloc>(context)
-                                        .add(DeleteTaskEvent(taskId: task.id)),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                  ListTask(
+                    listTask: getList(),
                   ),
                 ],
               ),
@@ -118,5 +95,19 @@ class _TasksPageState extends State<TasksPage> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  int getListLength(int index) {
+    if (index == 0) return allTasks.length;
+    if (index == 1) return noCompletedTasks.length;
+    if (index == 2) return completedTasks.length;
+    return 0;
+  }
+
+  List<Task> getList() {
+    if (idFilter == 0) return allTasks;
+    if (idFilter == 1) return noCompletedTasks;
+    if (idFilter == 2) return completedTasks;
+    return [];
   }
 }
