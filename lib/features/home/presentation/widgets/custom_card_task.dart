@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:taks_app/core/presentation/design/atoms/custom_card.dart';
 import 'package:taks_app/core/presentation/design/atoms/custom_text.dart';
 import 'package:taks_app/core/presentation/utils/extension/dimens_extension.dart';
+import 'package:taks_app/features/tasks/domain/entities/task.dart';
 
 class CustomCardTask extends StatelessWidget {
   const CustomCardTask({
     super.key,
     required this.title,
+    required this.tasks,
   });
   final String title;
+  final List<Task> tasks;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +33,8 @@ class CustomCardTask extends StatelessWidget {
                     color: index % 2 == 0
                         ? Colors.grey[200]
                         : Colors.white, // Alterna colores
-                    child: const CustomText(
-                      "Llevar a chiripa",
+                    child: CustomText(
+                      tasks[index].title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -39,7 +42,7 @@ class CustomCardTask extends StatelessWidget {
                 },
                 separatorBuilder: (context, index) =>
                     const SizedBox(height: 10),
-                itemCount: 4),
+                itemCount: tasks.length),
           )
         ],
       ),
