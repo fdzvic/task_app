@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taks_app/features/tasks/domain/use_cases/add_task.dart';
+import 'package:taks_app/features/tasks/domain/use_cases/complete_task.dart';
 import 'package:taks_app/features/tasks/domain/use_cases/delete_task.dart';
 import 'package:taks_app/features/tasks/domain/use_cases/get_tasks.dart';
 import 'package:taks_app/features/tasks/presentation/blocs/task_event.dart';
@@ -9,11 +10,13 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final GetTasks getTasks;
   final AddTask addTask;
   final DeleteTask deleteTask;
+  final CompleteTask completeTask;
 
   TaskBloc({
     required this.getTasks,
     required this.addTask,
     required this.deleteTask,
+    required this.completeTask,
   }) : super(TaskLoading()) {
     on<LoadTasks>((event, emit) async {
       emit(TaskLoading()); // Asegura que TaskLoading se emita primero
@@ -33,6 +36,15 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     on<DeleteTaskEvent>((event, emit) async {
       await deleteTask(event.taskId);
       add(LoadTasks()); // Recarga las tareas después de eliminar
+    });
+
+    on<CompleteTaskEvent>((event, emit) async {
+      try {
+        await completeTask(event.taskId);
+        add(LoadTasks()); // Recarga la lista de tareas después de completar una
+      } catch (_) {
+        emit(TaskError());
+      }
     });
   }
 }

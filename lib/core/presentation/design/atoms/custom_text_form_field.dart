@@ -159,6 +159,8 @@ class CustomTextFormFieldState extends State<CustomTextFormField> {
       case InputValueType.name:
         errorMessage = validateName(text);
         break;
+      case InputValueType.none:
+        break;
 
       case InputValueType.text:
       default:
@@ -198,4 +200,5 @@ enum InputValueType {
   password,
   email,
   name,
+  none,
 }

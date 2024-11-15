@@ -9,6 +9,22 @@ class TaskModel extends Task {
     super.isCompleted,
   });
 
+  TaskModel copyWith({
+    String? id,
+    String? title,
+    String? description,
+    DateTime? date,
+    bool? isCompleted,
+  }) {
+    return TaskModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      date: date ?? this.date,
+      isCompleted: isCompleted ?? this.isCompleted,
+    );
+  }
+
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     return TaskModel(
       id: json['id'],

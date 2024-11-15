@@ -39,4 +39,15 @@ class TasksDataSource {
     tasks.removeWhere((task) => task.id == taskId);
     await saveTasks(tasks);
   }
+
+  Future<void> completeTask(String taskId) async {
+    final tasks = await getTasks();
+    final taskIndex = tasks.indexWhere((task) => task.id == taskId);
+
+    if (taskIndex != -1) {
+      tasks[taskIndex] =
+          tasks[taskIndex].copyWith(isCompleted: !tasks[taskIndex].isCompleted);
+      await saveTasks(tasks);
+    }
+  }
 }

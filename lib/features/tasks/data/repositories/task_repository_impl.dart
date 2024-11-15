@@ -4,13 +4,13 @@ import 'package:taks_app/features/tasks/domain/entities/task.dart';
 import 'package:taks_app/features/tasks/domain/repositories/task_repository.dart';
 
 class TaskRepositoryImpl implements TaskRepository {
-  final TasksDataSource taskListDataSource;
+  final TasksDataSource tasksDataSource;
 
-  TaskRepositoryImpl(this.taskListDataSource);
+  TaskRepositoryImpl(this.tasksDataSource);
 
   @override
   Future<List<Task>> getTasks() async {
-    final taskModels = await taskListDataSource.getTasks();
+    final taskModels = await tasksDataSource.getTasks();
     return taskModels
         .map((taskModel) => Task(
               id: taskModel.id,
@@ -27,11 +27,16 @@ class TaskRepositoryImpl implements TaskRepository {
       title: task.title,
       isCompleted: task.isCompleted,
     );
-    await taskListDataSource.addTask(taskModel);
+    await tasksDataSource.addTask(taskModel);
   }
 
   @override
   Future<void> deleteTask(String taskId) async {
-    await taskListDataSource.deleteTask(taskId);
+    await tasksDataSource.deleteTask(taskId);
+  }
+
+  @override
+  Future<void> completeTask(String taskId) async {
+    await tasksDataSource.completeTask(taskId);
   }
 }

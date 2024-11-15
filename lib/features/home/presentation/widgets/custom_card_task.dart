@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taks_app/core/presentation/design/atoms/custom_card.dart';
 import 'package:taks_app/core/presentation/design/atoms/custom_text.dart';
-import 'package:taks_app/core/presentation/design/tokens/colors.dart';
 import 'package:taks_app/core/presentation/utils/extension/dimens_extension.dart';
 
 class CustomCardTask extends StatelessWidget {
@@ -29,8 +28,8 @@ class CustomCardTask extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return CustomCard(
                     color: index % 2 == 0
-                        ? colors.primaryColor.withOpacity(.1)
-                        : colors.primaryColor.withOpacity(.4),
+                        ? Colors.grey[200]
+                        : Colors.white, // Alterna colores
                     child: const CustomText(
                       "Llevar a chiripa",
                       maxLines: 1,

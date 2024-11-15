@@ -13,3 +13,8 @@ class DeleteTaskEvent extends TaskEvent {
   final String taskId;
   DeleteTaskEvent({required this.taskId});
 }
+
+class CompleteTaskEvent extends TaskEvent {
+  final String taskId;
+  CompleteTaskEvent({required this.taskId});
+}
