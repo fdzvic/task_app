@@ -106,7 +106,8 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            data["value"].toString(),
+                                            getValue(data["label"].toString(),
+                                                data["value"].toString()),
                                             style:
                                                 const TextStyle(fontSize: 14),
                                           ),
@@ -178,8 +179,14 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
     );
   }
 
-  formatDate(String date) {
-    return DateTime.parse(date).toString().split(' ').first;
+  getValue(String key, String value) {
+    if (key == 'createdAt') {
+      return DateTime.parse(value).toString().split(' ').first;
+    }
+    if (key == 'isCompleted') {
+      return value == 'true' ? 'Completada' : 'Pendiente';
+    }
+    return value;
   }
 
   getTitle(String value) {
@@ -193,7 +200,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
       case 'date':
         return 'Fecha';
       case 'isCompleted':
-        return 'Completada';
+        return 'Estado';
 
       default:
     }

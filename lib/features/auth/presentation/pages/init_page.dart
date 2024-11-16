@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:is_first_run/is_first_run.dart';
+import 'package:taks_app/core/data/network/user_preferences.dart';
 import 'package:taks_app/core/presentation/design/atoms/custom_text.dart';
 import 'package:taks_app/core/presentation/design/tokens/colors.dart';
 import 'package:taks_app/core/presentation/utils/routes.dart';
@@ -16,15 +16,10 @@ class InitPage extends StatefulWidget {
 class _InitPageState extends State<InitPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animatedController;
-  late bool isFirstRun;
 
   @override
   void initState() {
     super.initState();
-
-    Future.delayed(Duration.zero, () async {
-      isFirstRun = await IsFirstRun.isFirstRun();
-    });
 
     _animatedController = AnimationController(
       vsync: this,
@@ -35,9 +30,9 @@ class _InitPageState extends State<InitPage>
   @override
   void didChangeDependencies() {
     Timer(const Duration(seconds: 5), () {
-      context.go(Routes.onBoarding);
-      // isFirstRun ? prefs.usersRegistered = json.encode(mockUsers) : null;
-      // prefs.loggedIn ? context.go(Routes.home) : context.go(Routes.login);
+      prefs.userData.isNotEmpty
+          ? context.go(Routes.dashboard)
+          : context.go(Routes.onBoarding);
     });
 
     super.didChangeDependencies();

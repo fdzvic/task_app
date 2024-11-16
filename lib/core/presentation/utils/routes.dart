@@ -33,11 +33,8 @@ final router = GoRouter(initialLocation: Routes.init, routes: [
           page(state: state, child: const RegisterPage())),
   GoRoute(
       path: Routes.dashboard,
-      pageBuilder: (context, state) => page(
-          state: state,
-          child: const DashboardPage(
-            userName: "Victor",
-          ))),
+      pageBuilder: (context, state) =>
+          page(state: state, child: const DashboardPage())),
   GoRoute(
       path: Routes.detailsTask,
       pageBuilder: (context, state) => page(
