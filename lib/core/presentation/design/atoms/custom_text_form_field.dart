@@ -5,17 +5,11 @@ import 'package:taks_app/core/presentation/utils/validators.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final String label;
-
   final TextEditingController? controller;
-
   final bool? enabled;
-
   final InputValueType? inputValueType;
-
   final String? hintText;
-
   final String? suffixIconPath;
-
   final Function(String)? onChanged;
 
   const CustomTextFormField({
@@ -42,11 +36,9 @@ class CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   void initState() {
     super.initState();
-
     focusNode.addListener(() {
       setState(() {});
     });
-
     Future.delayed(
       Duration.zero,
       () => {
@@ -78,9 +70,11 @@ class CustomTextFormFieldState extends State<CustomTextFormField> {
         ),
         const SizedBox(height: 4),
         Container(
-          height: 48,
+          height: widget.inputValueType == InputValueType.paragraph ? null : 48,
           padding: const EdgeInsets.only(left: 16, right: 18),
-          alignment: Alignment.center,
+          alignment: widget.inputValueType == InputValueType.paragraph
+              ? Alignment.topLeft
+              : Alignment.center,
           decoration: BoxDecoration(
             color: colors.cardColor,
             borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -92,7 +86,7 @@ class CustomTextFormFieldState extends State<CustomTextFormField> {
             validator: (x) => _validateInput(x ?? ''),
             onChanged: widget.onChanged,
             enabled: widget.enabled,
-            textInputAction: TextInputAction.next,
+            textInputAction: TextInputAction.newline,
             inputFormatters: const [],
             style: Theme.of(context).textTheme.bodyMedium,
             decoration: InputDecoration(
@@ -109,6 +103,7 @@ class CustomTextFormFieldState extends State<CustomTextFormField> {
             obscureText: obscureText,
             cursorWidth: 1,
             cursorColor: colors.primaryColor,
+            maxLines: widget.inputValueType == InputValueType.paragraph ? 4 : 1,
           ),
         ),
         Container(
@@ -116,7 +111,6 @@ class CustomTextFormFieldState extends State<CustomTextFormField> {
           alignment: Alignment.centerLeft,
           child: Column(
             children: [
-              /// Mensaje error
               if (showError ?? false) ...[
                 const SizedBox(height: 4),
                 CustomText(
@@ -127,7 +121,7 @@ class CustomTextFormFieldState extends State<CustomTextFormField> {
               ]
             ],
           ),
-        )
+        ),
       ],
     );
   }
@@ -155,13 +149,12 @@ class CustomTextFormFieldState extends State<CustomTextFormField> {
       case InputValueType.email:
         errorMessage = validateEmail(text);
         break;
-
       case InputValueType.name:
         errorMessage = validateName(text);
         break;
       case InputValueType.none:
+      case InputValueType.paragraph:
         break;
-
       case InputValueType.text:
       default:
         errorMessage = validateText(text);
@@ -187,6 +180,8 @@ class CustomTextFormFieldState extends State<CustomTextFormField> {
     switch (widget.inputValueType) {
       case InputValueType.email:
         return TextInputType.emailAddress;
+      case InputValueType.paragraph:
+        return TextInputType.multiline;
       case InputValueType.text:
       case InputValueType.name:
       default:
@@ -201,4 +196,5 @@ enum InputValueType {
   email,
   name,
   none,
+  paragraph,
 }

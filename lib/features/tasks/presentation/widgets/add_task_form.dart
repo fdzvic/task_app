@@ -44,7 +44,7 @@ class _AddTaskFormState extends State<AddTaskForm> {
           CustomTextFormField(
             label: "Descripción (opcional)",
             controller: tecDescription,
-            inputValueType: InputValueType.none,
+            inputValueType: InputValueType.paragraph,
             onChanged: (value) {
               setState(() {}); // Esto actualiza el estado del modal
             },
