@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:taks_app/core/presentation/design/atoms/custom_text.dart';
+import 'package:taks_app/core/presentation/utils/routes.dart';
 import 'package:taks_app/features/tasks/domain/entities/task.dart';
 import 'package:taks_app/features/tasks/presentation/blocs/task_bloc.dart';
 import 'package:taks_app/features/tasks/presentation/blocs/task_event.dart';
@@ -25,6 +27,8 @@ class ListTask extends StatelessWidget {
             tileColor: index % 2 == 0 ? Colors.grey[200] : Colors.white,
             selectedTileColor: Colors.blue[100],
             title: CustomText(task.title),
+            onTap: () =>
+                context.go(Routes.detailsTask, extra: {"data": task.toJson()}),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

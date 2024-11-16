@@ -1,5 +1,4 @@
 import 'package:taks_app/features/tasks/data/data_sources/tasks_data_source.dart';
-import 'package:taks_app/features/tasks/data/models/task_model.dart';
 import 'package:taks_app/features/tasks/domain/entities/task.dart';
 import 'package:taks_app/features/tasks/domain/repositories/task_repository.dart';
 
@@ -16,16 +15,20 @@ class TaskRepositoryImpl implements TaskRepository {
               id: taskModel.id,
               title: taskModel.title,
               isCompleted: taskModel.isCompleted,
+              date: taskModel.date,
+              description: taskModel.description,
             ))
         .toList();
   }
 
   @override
   Future<void> addTask(Task task) async {
-    final taskModel = TaskModel(
+    final taskModel = Task(
       id: task.id,
       title: task.title,
       isCompleted: task.isCompleted,
+      date: task.date,
+      description: task.description,
     );
     await tasksDataSource.addTask(taskModel);
   }

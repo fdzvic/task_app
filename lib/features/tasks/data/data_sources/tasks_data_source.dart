@@ -1,7 +1,6 @@
 import 'package:taks_app/core/data/network/app_storage.dart';
 import 'dart:convert';
-
-import 'package:taks_app/features/tasks/data/models/task_model.dart';
+import 'package:taks_app/features/tasks/domain/entities/task.dart';
 
 class TasksDataSource {
   final AppStorage appStorage;
@@ -10,24 +9,24 @@ class TasksDataSource {
   TasksDataSource(this.appStorage);
 
   // Método para recuperar la lista de tareas
-  Future<List<TaskModel>> getTasks() async {
+  Future<List<Task>> getTasks() async {
     final jsonString = appStorage.getData(tasksKey);
     if (jsonString != null) {
       List<dynamic> jsonList = json.decode(jsonString);
-      return jsonList.map((jsonTask) => TaskModel.fromJson(jsonTask)).toList();
+      return jsonList.map((jsonTask) => Task.fromJson(jsonTask)).toList();
     }
     return [];
   }
 
   // Método para guardar la lista de tareas
-  Future<void> saveTasks(List<TaskModel> tasks) async {
+  Future<void> saveTasks(List<Task> tasks) async {
     List<Map<String, dynamic>> jsonList =
         tasks.map((task) => task.toJson()).toList();
     await appStorage.saveData(tasksKey, json.encode(jsonList));
   }
 
   // Método para agregar una tarea
-  Future<void> addTask(TaskModel task) async {
+  Future<void> addTask(Task task) async {
     final tasks = await getTasks();
     tasks.add(task);
     await saveTasks(tasks);

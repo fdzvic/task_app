@@ -79,7 +79,7 @@ class _AddTaskFormState extends State<AddTaskForm> {
             id: generateUniqueId(),
             title: tecTitle.text,
             description: tecDescription.text,
-            date: DateTime.now(),
+            date: DateTime.now().toIso8601String(),
           ),
         ),
       );
