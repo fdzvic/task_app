@@ -56,115 +56,122 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Column(
-            children: [
-              CustomCard(
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const CustomText(
-                      "Información",
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    const SizedBox(height: 10),
-                    Table(
-                      columnWidths: const {
-                        0: FlexColumnWidth(2),
-                        1: FlexColumnWidth(3),
-                      },
-                      children: listData.isNotEmpty
-                          ? List<TableRow>.generate(
-                              listData.length * 2 - 1,
-                              (index) {
-                                if (index.isOdd) {
-                                  return TableRow(
-                                    children: List.generate(
-                                      2,
-                                      (colIndex) => const SizedBox(height: 10),
-                                    ),
-                                  );
-                                } else {
-                                  final data = listData[index ~/ 2];
-                                  return TableRow(
-                                    decoration: BoxDecoration(
-                                      color:
-                                          colors.primaryColor.withOpacity(.5),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: CustomText(
-                                          getTitle(data["label"]),
-                                          fontWeight: FontWeight.bold,
-                                        ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                CustomCard(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CustomText(
+                        "Información",
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      const SizedBox(height: 10),
+                      Table(
+                        columnWidths: const {
+                          0: FlexColumnWidth(2),
+                          1: FlexColumnWidth(3),
+                        },
+                        children: listData.isNotEmpty
+                            ? List<TableRow>.generate(
+                                listData.length * 2 - 1,
+                                (index) {
+                                  if (index.isOdd) {
+                                    return TableRow(
+                                      children: List.generate(
+                                        2,
+                                        (colIndex) =>
+                                            const SizedBox(height: 10),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          data["value"].toString(),
-                                          style: const TextStyle(fontSize: 14),
-                                        ),
+                                    );
+                                  } else {
+                                    final data = listData[index ~/ 2];
+                                    return TableRow(
+                                      decoration: BoxDecoration(
+                                        color:
+                                            colors.primaryColor.withOpacity(.5),
+                                        borderRadius: BorderRadius.circular(5),
                                       ),
-                                    ],
-                                  );
-                                }
-                              },
-                            )
-                          : [
-                              const TableRow(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.all(16.0),
-                                    child: Text(
-                                      "No hay datos disponibles",
-                                      style: TextStyle(fontSize: 16),
-                                      textAlign: TextAlign.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: CustomText(
+                                            getTitle(data["label"]),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            data["value"].toString(),
+                                            style:
+                                                const TextStyle(fontSize: 14),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                },
+                              )
+                            : [
+                                const TableRow(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Text(
+                                        "No hay datos disponibles",
+                                        style: TextStyle(fontSize: 16),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
+                                  ],
+                                ),
+                              ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                              style: const ButtonStyle(
+                                  backgroundColor:
+                                      WidgetStatePropertyAll(Colors.red)),
+                              onPressed: () {
+                                BlocProvider.of<TaskBloc>(context).add(
+                                  DeleteTaskEvent(
+                                    taskId: widget.information['data']['id'],
                                   ),
-                                ],
-                              ),
-                            ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ElevatedButton(
-                            style: const ButtonStyle(
-                                backgroundColor:
-                                    WidgetStatePropertyAll(Colors.red)),
-                            onPressed: () {
-                              BlocProvider.of<TaskBloc>(context).add(
-                                DeleteTaskEvent(
-                                  taskId: widget.information['data']['id'],
-                                ),
-                              );
-                              context.go(Routes.dashboard);
-                            },
-                            child: const CustomText(
-                              "Eliminar",
-                              textColor: Colors.white,
-                            )),
-                        const SizedBox(width: 10),
-                        ElevatedButton(
-                            onPressed: () {
-                              BlocProvider.of<TaskBloc>(context).add(
-                                CompleteTaskEvent(
-                                  taskId: widget.information['data']['id'],
-                                ),
-                              );
-                              context.go(Routes.dashboard);
-                            },
-                            child: const CustomText("Finalizar")),
-                      ],
-                    )
-                  ],
+                                );
+                                context.go(Routes.dashboard);
+                              },
+                              child: const CustomText(
+                                "Eliminar",
+                                textColor: Colors.white,
+                              )),
+                          const SizedBox(width: 10),
+                          ElevatedButton(
+                              onPressed: () {
+                                BlocProvider.of<TaskBloc>(context).add(
+                                  CompleteTaskEvent(
+                                    taskId: widget.information['data']['id'],
+                                  ),
+                                );
+                                context.go(Routes.dashboard);
+                              },
+                              child: CustomText(widget.information['data']
+                                      ['isCompleted']
+                                  ? "Reactivar"
+                                  : "Finalizar")),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

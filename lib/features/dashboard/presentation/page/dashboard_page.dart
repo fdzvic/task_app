@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:taks_app/core/presentation/design/atoms/custom_text.dart';
+import 'package:taks_app/core/presentation/utils/routes.dart';
 import 'package:taks_app/features/home/presentation/pages/home_page.dart';
+import 'package:taks_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:taks_app/features/tasks/presentation/pages/tasks_page.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -17,7 +20,7 @@ class _DashboardState extends State<DashboardPage> {
   final List<Widget> _pages = [
     const HomePage(),
     const TasksPage(),
-    const Center(child: Text("Perfil")),
+    const ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -42,16 +45,14 @@ class _DashboardState extends State<DashboardPage> {
               Icons.notifications,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () => context.go(Routes.notification),
           ),
           IconButton(
             icon: const Icon(
               Icons.settings,
               color: Colors.white,
             ),
-            onPressed: () {
-              // Acción de configuración
-            },
+            onPressed: () => context.go(Routes.settings),
           ),
         ],
       ),
