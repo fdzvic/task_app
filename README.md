@@ -47,13 +47,13 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local:
 
 1. **Clonar el Repositorio**:
 git clone <https://github.com/fdzvic/task_app.git>
-cd task_app
 2. **Limpiar caché**:
 flutter clean
 3. **Instalar dependencia**:
 flutter pub get
-flutter run
-4. **Ejecutar la aplicación**:
+4. **Selecciona el dispositivo**:
+Elige el dispositivo en el que ejecutarás la aplicación, ya sea un dispositivo físico o un emulador/simulador. Sigue estos pasos según tu entorno de desarrollo:
+5. **Ejecutar la aplicación**:
 flutter run
 
 ## ⚙️ Requisitos previos
