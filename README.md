@@ -45,9 +45,9 @@ El proyecto sigue la **Clean Architecture**, dividiendo la lógica en tres capas
 
 Sigue estos pasos para configurar y ejecutar el proyecto en tu entorno local:
 
-1. **Clonar el Repositorio**
-git clone <URL_DEL_REPOSITORIO>
-cd taks_app
+1. **Clonar el Repositorio**:
+git clone <https://github.com/fdzvic/task_app.git>
+cd task_app
 2. **Limpiar caché**:
 flutter clean
 3. **Instalar dependencia**:
@@ -69,27 +69,25 @@ Herramientas necesarias
 
 _Captura que muestra las tareas, barra de navegación inferior y menú superior._
 
-![Home Page](assets/images/home_app.png)
-
----
+![Home Page](assets/images/home_app.jpg)
 
 ### Task Page
 
 _Pantalla para mostrar las tareas registradas y su estado actual._
 
-![Task Page](assets/images/task_app.png)
+![Task Page](assets/images/task_app.jpg)
 
 ### Profile Page
 
 _Pantalla para ver los datos de usuario._
 
-![Profile Page](assets/images/profile_app.png)
+![Profile Page](assets/images/profile_app.jpg)
 
 ### Details Page
 
 _Pantalla para ver los detalles especificos de cada tarea._
 
-![Profile Page](assets/images/details_task.png)
+![Profile Page](assets/images/details_task.jpg)
 
 ---
 
